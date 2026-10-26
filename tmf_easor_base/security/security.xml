@@ -1,0 +1,8 @@
+<odoo>
+  <record id="privilege" model="res.groups.privilege"><field name="name">Easor</field><field name="category_id" ref="base.module_category_accounting"/></record>
+  <record id="group_user" model="res.groups"><field name="name">Preparación y consulta</field><field name="privilege_id" ref="privilege"/><field name="implied_ids" eval="[(4, ref('base.group_user'))]"/></record>
+  <record id="group_manager" model="res.groups"><field name="name">Configuración</field><field name="privilege_id" ref="privilege"/><field name="implied_ids" eval="[(4, ref('group_user'))]"/></record>
+  <record id="group_issuer" model="res.groups"><field name="name">Autorizar emisión Easor</field><field name="implied_ids" eval="[(4, ref('group_user'))]"/></record>
+  <record id="backend_company_rule" model="ir.rule"><field name="name">Easor: compañía de conexión</field><field name="model_id" ref="model_tmf_easor_backend"/><field name="domain_force">[('company_id', 'in', company_ids)]</field></record>
+  <record id="binding_company_rule" model="ir.rule"><field name="name">Easor: compañía de equivalencia</field><field name="model_id" ref="model_tmf_easor_binding"/><field name="domain_force">[('company_id', 'in', company_ids)]</field></record>
+</odoo>

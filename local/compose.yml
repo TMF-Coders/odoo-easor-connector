@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: ${ODOO_DB_PASSWORD:?Set ODOO_DB_PASSWORD in .env}
+    volumes: [db:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U odoo']
+      interval: 5s
+      retries: 10
+  odoo:
+    image: odoo:19.0
+    depends_on:
+      db:
+        condition: service_healthy
+    ports: ['127.0.0.1:8069:8069']
+    environment:
+      HOST: db
+      USER: odoo
+      PASSWORD: ${ODOO_DB_PASSWORD:?Set ODOO_DB_PASSWORD in .env}
+      TMF_EASOR_ALLOWED_HOSTS: ${TMF_EASOR_ALLOWED_HOSTS:-api.example.invalid}
+      TMF_EASOR_ALLOW_WRITES: ${TMF_EASOR_ALLOW_WRITES:-0}
+      TMF_EASOR_KEY_DEMO: ${TMF_EASOR_KEY_DEMO:-}
+    volumes:
+      - ../:/mnt/extra-addons:ro
+      - ./odoo.conf:/etc/odoo/odoo.conf:ro
+      - odoo:/var/lib/odoo
+volumes:
+  db:
+  odoo:

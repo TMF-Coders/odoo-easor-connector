@@ -1,0 +1,32 @@
+name: Connector tests
+on:
+  pull_request:
+  push:
+    branches: [main, 'feat/**', '19.0']
+permissions:
+  contents: read
+concurrency:
+  group: easor-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'requests>=2.32.3,<3'
+      - run: python -m unittest discover -s tests -v
+      - run: python -m compileall -q tmf_easor_base tmf_easor_invoicing
+  odoo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/test_odoo.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: odoo19-test-evidence
+          path: test-results/

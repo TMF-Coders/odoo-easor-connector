@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+backend_user,backend user,model_tmf_easor_backend,group_user,1,0,0,0
+backend_manager,backend manager,model_tmf_easor_backend,group_manager,1,1,1,0
+binding_user,binding user,model_tmf_easor_binding,group_user,1,0,0,0
+binding_manager,binding manager,model_tmf_easor_binding,group_manager,1,1,1,1
