@@ -1,0 +1,6 @@
+[options]
+admin_passwd = replace-with-a-long-random-master-password
+addons_path = /usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons
+list_db = False
+db_name = easor_demo
+proxy_mode = False

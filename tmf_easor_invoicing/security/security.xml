@@ -1,0 +1,4 @@
+<odoo>
+  <record id="job_company_rule" model="ir.rule"><field name="name">Easor: compañía de operación</field><field name="model_id" ref="model_tmf_easor_job"/><field name="domain_force">[('company_id', 'in', company_ids)]</field></record>
+  <record id="event_company_rule" model="ir.rule"><field name="name">Easor: compañía de historial</field><field name="model_id" ref="model_tmf_easor_event"/><field name="domain_force">[('company_id', 'in', company_ids)]</field></record>
+</odoo>

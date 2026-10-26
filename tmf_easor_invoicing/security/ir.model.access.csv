@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+job_user,job user,model_tmf_easor_job,tmf_easor_base.group_user,1,0,0,0
+event_user,event user,model_tmf_easor_event,tmf_easor_base.group_user,1,0,0,0
+recovery_user,recovery user,model_tmf_easor_recovery,tmf_easor_base.group_issuer,1,1,1,1

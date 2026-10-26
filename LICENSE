@@ -1,0 +1,11 @@
+Copyright (c) 2026 TMFCoders
+SPDX-License-Identifier: LGPL-3.0-only
+
+This original connector is licensed under the GNU Lesser General Public License,
+version 3 only. It is provided without warranty, including merchantability or
+fitness for a particular purpose. The complete license text is available at
+https://www.gnu.org/licenses/lgpl-3.0.html together with the incorporated terms of
+https://www.gnu.org/licenses/gpl-3.0.html .
+
+Odoo and Easor are trademarks of their respective owners. This repository does not
+redistribute proprietary Easor implementation or grant rights to its services.
