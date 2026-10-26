@@ -14,8 +14,9 @@ done
 docker exec "$name-db" pg_isready -U odoo
 mkdir -p test-results
 # Synthetic DB and mocked API only; production secrets are never required.
-docker run --rm --network "$name" -v "$PWD:/mnt/extra-addons:ro" odoo:19.0 \
-  odoo --db_host=db --db_user=odoo --db_password="$pw" -d easor_test \
+docker run --rm --network "$name" -v "$PWD:/mnt/extra-addons:ro" \
+  -e HOST=db -e USER=odoo -e PASSWORD="$pw" odoo:19.0 \
+  odoo -d easor_test \
   --init=tmf_easor_invoicing --without-demo=all --stop-after-init --test-enable \
   --test-tags=/tmf_easor_invoicing --http-port=0 --log-level=test \
   2>&1 | tee test-results/odoo.log
