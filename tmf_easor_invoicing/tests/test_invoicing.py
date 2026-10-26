@@ -96,13 +96,22 @@ class TestEasorInvoicing(AccountTestInvoicingCommon):
 
     def test_operator_cannot_authorize_issue(self):
         move = self.invoice(); move.action_easor_prepare()
-        internal(move.easor_job_id).write({"state": "review", "remote_id": "INVOICE001"})
+        internal(move.easor_job_id.sudo()).write({"state": "review", "remote_id": "INVOICE001"})
         with self.assertRaises(AccessError): move.easor_job_id.with_user(self.operator).action_approve_issue()
 
     def test_direct_metadata_and_default_injection_denied(self):
         move = self.invoice(); move.action_easor_prepare()
         with self.assertRaises(AccessError):
             self.env["account.move"].with_context(default_easor_job_id=move.easor_job_id.id).create({"move_type": "out_invoice", "journal_id": self.journal.id})
+
+    def test_pdf_defaults_and_reassignment_cannot_forge_original(self):
+        move = self.invoice()
+        with self.assertRaises(UserError):
+            self.env["ir.attachment"].with_context(default_res_model="account.move", default_res_id=move.id,
+                default_res_field="invoice_pdf_report_file").create({"name": "not-the-original.pdf", "raw": b"%PDF-fake"})
+        attachment = self.env["ir.attachment"].create({"name": "ordinary.pdf", "raw": b"%PDF-fake"})
+        with self.assertRaises(UserError):
+            attachment.write({"res_model": "account.move", "res_id": move.id, "res_field": "invoice_pdf_report_file"})
 
     def test_cross_company_access_denied(self):
         move = self.invoice(); move.action_easor_prepare()
@@ -114,7 +123,7 @@ class TestEasorInvoicing(AccountTestInvoicingCommon):
     def test_complete_mocked_flow_and_original_pdf(self):
         move = self.invoice(); move.action_easor_prepare(); job = move.easor_job_id
         fake = FakeEasor(job.snapshot, self.backend.business_id)
-        with patch.object(type(self.backend), "_client", return_value=fake), patch.object(type(self.env.cr), "commit"):
+        with patch.object(type(self.backend), "_client", return_value=fake), patch.object(self.env.cr, "commit", return_value=None):
             job.sudo()._run_step(); self.assertEqual(job.state, "draft_sync")
             job.sudo()._run_step(); self.assertEqual(job.state, "review")
             job.action_approve_issue()

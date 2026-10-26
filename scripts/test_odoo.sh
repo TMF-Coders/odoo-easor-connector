@@ -17,9 +17,9 @@ mkdir -p test-results
 docker run --rm --network "$name" -v "$PWD:/mnt/extra-addons:ro" \
   -e HOST=db -e USER=odoo -e PASSWORD="$pw" odoo:19.0 \
   odoo -d easor_test \
-  --init=tmf_easor_invoicing --without-demo=all --stop-after-init --test-enable \
-  --test-tags=/tmf_easor_invoicing --http-port=0 --log-level=test \
-  2>&1 | tee test-results/odoo.log
+  --init=tmf_easor_invoicing --without-demo=True --stop-after-init --test-enable \
+  --test-tags=/tmf_easor_invoicing --http-interface=127.0.0.1 --http-port=0 --log-level=test \
+  2>&1 | tee test-results/odoo.log | tail -n 120
 if grep -Eq '(FAIL:|ERROR:|[1-9][0-9]* failed,|[1-9][0-9]* error\(s\))' test-results/odoo.log; then
   echo 'Odoo test failures found'; exit 1
 fi
