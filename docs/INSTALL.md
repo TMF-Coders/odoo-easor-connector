@@ -68,7 +68,7 @@ maestra. Son archivos ignorados por Git. Ejecute desde la raíz:
 ```sh
 docker compose --env-file .env -f local/compose.yml up -d db
 docker compose --env-file .env -f local/compose.yml run --rm odoo \
-  odoo --stop-after-init -d easor_demo -i tmf_easor_invoicing --without-demo=all
+  odoo --stop-after-init -d easor_demo -i tmf_easor_invoicing --without-demo=True
 docker compose --env-file .env -f local/compose.yml up -d odoo
 ```
 

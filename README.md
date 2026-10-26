@@ -56,7 +56,7 @@ Lea [Instalación](docs/INSTALL.md) y [Uso y recuperación](docs/OPERATIONS.md).
 El servidor necesita `requests` y ambos addons en su `addons_path`:
 
 ```sh
-odoo -d easor_demo --stop-after-init -i tmf_easor_invoicing --without-demo=all
+odoo -d easor_demo --stop-after-init -i tmf_easor_invoicing --without-demo=True
 ```
 
 Las escrituras necesitan **dos interruptores**: `TMF_EASOR_ALLOW_WRITES=1` en el
